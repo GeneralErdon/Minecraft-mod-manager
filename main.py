@@ -1,28 +1,21 @@
 import flet as ft
-import os
-import requests as rq
+from flet import (
+    Page, Text, TextField, ElevatedButton,
+)
+
 from src.utils.requests_class import ApiRequest
 
 """
 Minecraft id: 432
 """
 
-class Main:
-    def __init__(self) -> None:
-        self._api_key:str = os.environ.get("CURSEFORGE_API_KEY")
-        self._url:str = os.environ.get("CURSEFORGE_BASE_URL")
-        self.headers:dict[str,str] = {"x-api-key": self._api_key}
+
+def main(page:ft.Page):
+    page.title = "Minecraft Mods Downloader"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER.value
     
-    def main(self, page:ft.Page):
-        page.title = "Ejemplo de pagina"
-        page.window_top = 200
-        page.window_left = 200
-        
-        
-        
-        
-        page.update()
+    page.update()
 
 
 
-ft.app(target=Main().main,port=8550, view=ft.AppView.FLET_APP,)
+ft.app(target=main,port=8550, view=ft.AppView.FLET_APP,)
