@@ -1,6 +1,7 @@
 import flet as ft
 import os
 import requests as rq
+from src.utils.requests_class import ApiRequest
 
 """
 Minecraft id: 432
@@ -16,6 +17,8 @@ class Main:
         page.title = "Ejemplo de pagina"
         page.window_top = 200
         page.window_left = 200
+        
+        
         
         
         page.update()
