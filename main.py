@@ -7,6 +7,9 @@ from src.utils.requests_class import ApiRequest
 
 """
 Minecraft id: 432
+Documentacion = https://docs.curseforge.com/?python#curseforge-core-api-mods
+base = https://api.curseforge.com
+login = https://console.curseforge.com/#/login
 """
 
 
