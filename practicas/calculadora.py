@@ -3,6 +3,11 @@ from flet import (
     Page, Text, TextField, ElevatedButton, Row, Column, TextAlign, MainAxisAlignment, Container,
     colors, BorderRadius, Padding
 )
+import math
+
+class errors:
+    SYNTAX_ERROR:str = "Syntax Error"
+    ZERO_DIVISION:str = "Error Divided by zero"
 
 def main(page:ft.Page):
     page.title = "Calculadora"
@@ -16,16 +21,45 @@ def main(page:ft.Page):
     page.window_max_width = 420
     
     def write_num(n:str) -> None:
-        if result_txt.value == "0":
+        """Función para pintar un número en la calculadora
+
+        Args:
+            n (str): Numero que se va a pintar
+        """
+        errores = [errors.SYNTAX_ERROR, errors.ZERO_DIVISION]
+        if (result_txt.value == "0") or (result_txt.value in errores):
             result_txt.value = n
             return result_txt.update()
+        
         result_txt.value += n
-        return result_txt.update()
+        result_txt.update()
     
     def clear(e):
+        """Función para limpiar la calculadora
+
+        Args:
+            e (ControllerEvent): evento.
+        """
         result_txt.value = "0"
         result_txt.update()
     
+    def dot(e):
+        if (not result_txt.value[-1].isnumeric()) or "." in result_txt.value:
+            return None
+        result_txt.value += "."
+        result_txt.update()
+    
+    def equals(e):
+        try:
+            result = eval(result_txt.value, None, None)
+        except SyntaxError:
+            result = errors.SYNTAX_ERROR
+        except ZeroDivisionError:
+            result = errors.ZERO_DIVISION
+        
+        result_txt.value = f"{result}"
+        return result_txt.update()
+        
     
     
     result_txt = Text(value="0", disabled=True, text_align=TextAlign.RIGHT, color=colors.WHITE, size=20)
@@ -42,7 +76,7 @@ def main(page:ft.Page):
                         ElevatedButton(text="AC", expand=1,bgcolor=colors.WHITE12 ,  on_click=clear),
                         ElevatedButton(text="+/-",expand=1,bgcolor=colors.WHITE12 , on_click=...),
                         ElevatedButton(text="%",expand=1,bgcolor=colors.WHITE12 , on_click=...),
-                        ElevatedButton(text="/",expand=1,bgcolor=colors.WHITE12 , on_click=...),
+                        ElevatedButton(text="/",expand=1,bgcolor=colors.WHITE12 , on_click=lambda e: write_num("/")),
                     ]),
                     Row([
                         ElevatedButton(text="7",expand=1, on_click=lambda e: write_num("7")),
@@ -60,12 +94,12 @@ def main(page:ft.Page):
                         ElevatedButton(text="3",expand=1, on_click=lambda e: write_num("3")),
                         ElevatedButton(text="2",expand=1, on_click=lambda e: write_num("2")),
                         ElevatedButton(text="1",expand=1, on_click=lambda e: write_num("1")),
-                        ElevatedButton(text="+",expand=1, on_click=...),
+                        ElevatedButton(text="+",expand=1, on_click=lambda e: write_num("+")),
                     ]),
                     Row([
                         ElevatedButton(text="0",expand=2, on_click=lambda e: write_num("0")),
-                        ElevatedButton(text=".",expand=1, on_click=...),
-                        ElevatedButton(text="=",expand=1, on_click=...),
+                        ElevatedButton(text=".",expand=1, on_click=dot),
+                        ElevatedButton(text="=",expand=1, on_click=equals),
                     ]),
                 ]
             ),
